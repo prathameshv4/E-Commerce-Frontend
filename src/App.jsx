@@ -10,6 +10,7 @@ import Orders from "./pages/Orders";
 import PlaceOrder from "./pages/PlaceOrder";
 import Product from "./pages/Product";
 import Navbar from './components/Navbar'
+import Footer from "./components/Footer";
 
 const App = () => {
 
@@ -31,6 +32,7 @@ const App = () => {
 
 
       </Routes>
+      <Footer />
     </div>
   )
 }
