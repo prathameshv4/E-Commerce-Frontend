@@ -14,6 +14,7 @@ const Collection = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedType, setSelectedType] = useState([]);
+    const [sortBy, setSortBy] = useState('');
 
     const toggleCategory = (e) => {
         const value = e.target.value;
@@ -47,11 +48,35 @@ const Collection = () => {
         setFilteredProducts(productCopy);
     }
 
+    const sortProducts = (e) => {
+        const value = e.target.value;
+        let productCopy = [...filteredProducts];
+
+        switch (value) {
+            // case 'relavant':
+            //     productCopy.sort((a, b) => a.price - b.price);
+            //     break;
+            case 'low-high':
+                productCopy.sort((a, b) => a.price - b.price);
+                break;
+            case 'high-low':
+                productCopy.sort((a, b) => b.price - a.price);
+                break;
+            default:
+                productCopy = productsTemp;
+        }
+        setFilteredProducts(productCopy);
+
+    }
+
     useEffect(() => {
-        console.log('in useEffect');
+        console.log('in useEffect - [selectedCategory, selectedType]');
         applyFilter();
     }, [selectedCategory, selectedType]); //dependancy
 
+    useEffect(() => {
+        if (sortBy) sortProducts({ target: { value: sortBy } });
+    }, [sortBy]); //dependancy
 
 
 
@@ -99,10 +124,11 @@ const Collection = () => {
             <div className='flex-1'>
                 <div className='flex justify-between text-base sm:text-2xl mb-4'>
                     <Title text1={'ALL'} text2={'COLLECTIONS'} />
-                    <select className='border border-gray-300 rounded text-sm px-2 py-1'>
-                        <option value="relevant">Sort by: Relevant</option>
-                        <option value="low">Sort by: Low to High</option>
-                        <option value="high">Sort by: High to Low</option>
+                    <select onChange={(e) => setSortBy(e.target.value)} className='border border-gray-300 rounded text-sm px-2 py-1'>
+                        <option selected="selected" value="default">Select Sort by</option>
+                        {/* <option value="relavant">Sort by: Relavant</option> */}
+                        <option value="low-high">Sort by: Low to High</option>
+                        <option value="high-low">Sort by: High to Low</option>
                     </select>
                 </div>
                 <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
